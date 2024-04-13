@@ -1,0 +1,283 @@
+{% extends "sentry/layout.html" %}
+{% load static %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style1.css' %}">
+</head>
+<body>
+    <!-- Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Login</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="login-form" class="main-form needs-validation" action="{% url 'login' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="email" class="form-control" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control" placeholder="Password" required>
+                </div>     
+        </div>
+        <div class="modal-footer">
+            <p>Still don't have an account? <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#registerModal">Register here</a></p>
+            <button id="login-button" type="submit" class="btn btn-dark custom-btn">Login</button>
+        </div></form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalLabel">Register</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="register-form" class="main-form needs-validation" action="{% url 'register' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="email" class="form-control" placeholder="Email" required>                                        
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" class="form-control" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="confirmation" class="form-control" placeholder="Confirm Password" required>
+                </div>            
+        </div>
+        <div class="modal-footer">
+            <p>Already have an account? <a href="#" data-dismiss="modal" data-toggle="modal" data-target="#loginModal">Sign In</a></p>
+            <button id="register-button" type="submit" class="btn btn-dark custom-btn">Register</button>
+        </div></form>           
+        </div>
+    </div>
+</div>
+
+<!-- Content -->
+<section class="discovery container section-1">
+    <div
+      class="
+        text
+        col-lg-6 col-md-6 col-12
+        w-50
+        d-flex
+        flex-column
+        align-items-center
+        justify-content-center
+      "
+    >
+      <h1 class="got-lost-heading mb-3">GOT LOST</h1>
+
+      <p>
+        Something lost it's way and came to you just to show the world how
+        honest you are!
+      </p>
+      <p class="mb-5">
+        Or if you've lost something just chill! People here are damnnn cool!
+      </p>
+      <div class="shrink">
+        <a class="learn-more" href="forms/register.html">Register Now</a>
+      </div>
+    </div>
+
+    <div class="img col-lg-6 col-md-6 col-12">
+      <img
+        src="{% static 'image/images/lost-and-found.png' %}"
+        alt="image"
+        class="img-fluid lost-found"
+      />
+    </div>
+  </section>
+
+  <section class="discovery-col-ak section-2">
+    <div class="container">
+      <div class="img col-lg-6 col-md-6 col-12 w-50 pt-5 pb-5">
+        <img
+          src="{% static 'image/images/community.png' %}"
+          alt="image"
+          class="img-fluid border-top-20"
+        />
+      </div>
+      <div class="text col-lg-6 col-md-6 col-12 w-50 pt-5 pb-5">
+        <h2 class="title mb-3">
+          WHAT WE DO
+          <hr />
+        </h2>
+
+        <p class="mb-5">
+          We try to reduce students stress somewhat by heping them if they
+          lost something precious on the college/hostle grounds. <br />
+          There are two sections where you can go to one is the
+          <b><a href="forms/lostForm.html">LOST</a></b> section and the
+          other is the
+          <b><a href="forms/foundForm.html">FOUND</a></b> section. You can
+          inform other people about what precious belonging you’ve lost and
+          ask your fellow students for help and if you’ve found something
+          then you can be of help to somebody else. Both the sections have
+          their respective instructions. <br />
+          And the faculty involvement in this procedure is about nill, so it
+          also helps in creating a strong bond between the kids and also to
+          maintain transparency.
+        </p>
+        <div class="shrink d-inline-block">
+          <a class="learn-more px-5" href="about_us.html">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="service section-3">
+    <div class="col mx-auto align-items-center pt-5">
+      <div class="heading text-center mb-5 pt-3">
+        <h2 class="heading">
+          OUR SERVICES
+          <div class="d-flex justify-content-center">
+            <hr />
+          </div>
+        </h2>
+      </div>
+      <div
+        class="d-flex flex-row-reverse justify-content-between container"
+      >
+        <div class="card-image w-50 col-lg-6 col-md-3 col-12 text-right">
+          <img class="img-fluid w-100" src="{% static 'image/images/lost-card.png' %}" alt="image" />
+        </div>
+        <div
+          class="
+            one
+            col-lg-6 col-md-3 col-12
+            w-50
+            m-2
+            align-items-center
+            lost-found-card
+          "
+        >
+        <h5 class="card-title">Lost</h5>
+              <ul class="my-3">
+                <li class="text-left mb-3">
+                  Only the property lost on College or Hostel can be reported.
+                </li>
+                <li class="text-left mb-3">
+                  Maximum time for filing any lost report should be 2 days.
+                </li>
+                <li class="text-left mb-3">
+                  Try to be as much detailed as you can be.
+                </li>
+                <li class="text-left mb-5">
+                  Head towards the form below if you have lost your property.
+                </li>
+              </ul>
+
+              <div class="shrink">
+                <a class="learn-more px-5" href="forms/lostForm.html">Next</a>
+              </div>
+            </div>
+          </div>
+          <div
+            class="d-flex flex-row justify-content-between container mt-5 pb-5"
+          >
+            <div class="card-image w-50 col-lg-6 col-md-3 col-12 text-left">
+              <img class="img-fluid w-100" src="images/found-card.png" alt="" />
+            </div>
+            <div
+              class="
+                one
+                col-lg-6 col-md-3 col-12
+                w-50
+                m-2
+                align-items-center
+                lost-found-card
+              "
+            >
+              <h5 class="card-title">Found</h5>
+              <ul class="my-3">
+                <li class="text-left mb-3">
+                  Below is the form, if you've found a lost property on
+                  college/hostel.
+                </li>
+                <li class="text-left mb-3">
+                  Please try to report as soon as possible so that you can help
+                  someone in need.
+                </li>
+                <li class="text-left mb-3">
+                  The involvement of faculty will be kept as minimum as possible
+                  by our side, so that this might also help in student's ability
+                  to build connections.
+                </li>
+                <li class="text-left mb-5">
+                  If nobody comes forward for the property you found, only then
+                  the faculty will get involved.
+                </li>
+              </ul>
+
+              <div class="shrink">
+                <a class="learn-more px-5" href="forms/foundForm.html">Next</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer id="page-footer" class="py-2 bg-dark">
+        <div class="brand">
+          <a class="navbar-brand" href="#">gotLost</a>
+        </div>
+        <div class="copyright">
+          <small>
+            <span>Copyright &copy;</span> <span>All Rights Reserved</span>
+            <span>Terms of Use</span> and <span>Privacy Policy</span></small
+          >
+        </div>
+  <br>
+  <hr>
+        <div class="favicon">
+          <i class="social-media fab fa-facebook-f fa-2x"></i>
+          <i class="social-media fab fa-twitter fa-2x"></i>
+          <i class="social-media fab fa-instagram fa-2x"></i>
+          <i class="social-media fas fa-envelope fa-2x"></i>
+        </div>
+  
+        <div class="BackToTop">
+          <a id="back-to-top" href="#"  role="button"><i class="back fas fa-chevron-up fa-2x"></i></a>
+          <h4>Back To Top</h4>
+          </div>
+          
+      </footer>
+  
+         
+    {% if user.is_authenticated %}
+    <a href="{% url 'sentry' %}" class="landing-btn">
+        <button class="btn btn-dark btn-shadow custom-btn" type="button">Go to Sentry Map</button>
+    </a>
+{% else %}
+    <a href="#" class="landing-btn" data-toggle="modal" data-target="#registerModal">
+        <button class="btn btn-dark btn-shadow custom-btn" type="button">Get Started</button>
+    </a>
+{% endif %}
+
+  </section>
+
+
+{% endblock %}
+    
+</body>
+</html>
+

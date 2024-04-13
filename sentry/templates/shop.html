@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body class="">
+<div class="container">
+    <header>
+        <h1>Your Shopping Cart </h1>
+        <div class="shopping">
+            <img src="{% static 'image/shopping.svg' %}">
+            <span class="quantity">0</span>
+        </div>
+    </header>
+
+    <div class="list">
+    </div>
+</div>
+<div class="card">
+    <h1>Card</h1>
+    <ul class="listCard">
+    </ul>
+    <div class="checkOut">
+        <div class="total">0</div>
+        <div class="closeShopping">Close</div>
+        <p>Total Amount: {{ amount_inr }} INR</p>
+
+        <form action="{% url 'login' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="amount" value="{{ amount_paisa }}">
+            <script
+                id="razorpay-button"
+                src="https://checkout.razorpay.com/v1/checkout.js"
+                data-key="rzp_test_DWstJuR6f2D2C9"
+                data-amount="45000"  
+                data-currency="INR"
+                data-name="Acme Corp"
+                data-description="A Wild Sheep Chase is the third novel by Japanese author Haruki Murakami"
+                data-image="https://plus.unsplash.com/premium_photo-1669323925693-b27e909a670d?auto=format&fit=crop&q=80&w=1980&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                data-prefill.name="Atharv Patil"
+                data-prefill.email="Atharv.patil@example.com"
+                data-order_id="{{ order_id }}"
+                data-theme.color="#e8bc0e"
+            ></script>
+            <input type="hidden" custom="Hidden Element" name="hidden" />
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript">
+    let openShopping = document.querySelector('.shopping');
+    let closeShopping = document.querySelector('.closeShopping');
+    let list = document.querySelector('.list');
+    let listCard = document.querySelector('.listCard');
+    let body = document.querySelector('body');
+    let total = document.querySelector('.total');
+    let quantity = document.querySelector('.quantity');
+
+    openShopping.addEventListener('click', () => {
+        body.classList.add('active');
+    })
+    closeShopping.addEventListener('click', () => {
+        body.classList.remove('active');
+    })
+
+    let products = [
+        {
+            id: 1,
+            name: 'Pen',
+            image: "{% static 'image/1.png' %}",
+            price: 450.00
+        },
+        {
+            id: 2,
+            name: 'Book ',
+            image: "{% static 'image/2.png' %}",
+            price: 450.00
+        },
+        {
+            id: 3,
+            name: 'Bottle',
+            image: "{% static 'image/3.png' %}",
+            price: 450.00
+        },
+        {
+            id: 4,
+            name: 'blue pen',
+            image: "{% static 'image/4.png' %}",
+            price: 300
+        },
+        {
+            id: 5,
+            name: 'Chips box',
+            image: "{% static 'image/5.png' %}",
+            price: 830
+        },
+        {
+            id: 6,
+            name: 'Iphone',
+            image: "{% static 'image/6.png' %}",
+            price: 950
+        }
+    ];
+    let listCards = [];
+
+    function initApp() {
+        products.forEach((value, key) => {
+            let newDiv = document.createElement('div');
+            newDiv.classList.add('item');
+            newDiv.innerHTML = `
+                <img src="${value.image}">
+                <div class="title">${value.name}</div>
+                <div class="price">${value.price.toLocaleString()}</div>
+                <button onclick = "addToCard(${key}) "> Add To Card </button>`;
+            list.appendChild(newDiv);
+        })
+    }
+
+    initApp();
+
+    function addToCard(key) {
+        if (listCards[key] == null) {
+            // Copy product from list to list card
+            listCards[key] = JSON.parse(JSON.stringify(products[key]));
+            listCards[key].quantity = 1;
+        }
+        reloadCard();
+    }
+
+    function updateRazorpayAmount(newAmount) {
+        const script = document.getElementById('razorpay-button');
+        if (script) {
+            script.setAttribute('data-amount', newAmount);
+        } else {
+            console.error("Razorpay script not found with ID 'razorpay-button'");
+        }
+    }
+
+    function reloadCard() {
+        listCard.innerHTML = '';
+        let count = 0;
+        let totalPrice = 0;
+
+        listCards.forEach((value, key) => {
+            totalPrice = totalPrice + value.price;
+            count = count + value.quantity;
+            if (value != null) {
+                let newDiv = document.createElement('li');
+                newDiv.innerHTML = `
+                    <div><img src="${value.image}"/></div>
+                    <div>${value.name}</div>
+                    <div>${value.price.toLocaleString()}</div>
+                    <div>
+                        <button onclick="changeQuantity(${key}, ${value.quantity - 1})">-</button>
+                        <div class="count">${value.quantity}</div>
+                        <button onclick="changeQuantity(${key}, ${value.quantity + 1})">+</button>
+                    </div>`;
+                listCard.appendChild(newDiv);
+            }
+        })
+
+        total.innerText = totalPrice.toLocaleString();
+        quantity.innerText = count;
+
+        // Update Razorpay amount
+        updateRazorpayAmount(totalPrice * 100); // Convert to paisa
+    }
+
+    function changeQuantity(key, quantity) {
+        if (quantity == 0) {
+            delete listCards[key];
+        } else {
+            listCards[key].quantity = quantity;
+            listCards[key].price = quantity * products[key].price;
+        }
+        reloadCard();
+    }
+</script>
+
+<!-- Load the Razorpay script separately -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<a href="/sentry" class="landing-btn" data-toggle="modal" data-target="#registerModal">
+    <button class="btn btn-dark btn-shadow custom-btn" type="button" style="margin-right: 120px;
+    padding: 15px;
+    float: right;">Back to Lost and found</button>
+</a>
+</body>
+</html>
