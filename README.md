@@ -23,3 +23,17 @@ A web application designed to track and recover lost items within a specific are
    ```bash
    git clone https://github.com/yourusername/lost-and-found-system.git
    cd lost-and-found-system
+   python -m venv venv
+2.Create and activate a virtual environment:
+python -m venv venv
+source venv/bin/activate   # On Windows, use `venv\Scripts\activate`
+
+3.Install the required dependencies:
+pip install -r requirements.txt
+Run database migrations:
+python manage.py migrate
+
+4.Start the development server:
+python manage.py runserver
+Access the application in your browser:
+http://127.0.0.1:8000
